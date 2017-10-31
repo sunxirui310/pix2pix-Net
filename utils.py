@@ -52,8 +52,9 @@ def preprocess_A_and_B(img_A, img_B, load_size=286, fine_size=256, flip=True, is
         img_B = img_B[h1:h1+fine_size, w1:w1+fine_size]
 
         if is_random_rot:
-            img_A = rot_image(img_A,fine_size)
-            img_B = rot_image(img_B,fine_size)
+            angle=np.random.random_sample()*360-180
+            img_A = rot_image(img_A,fine_size,angle)
+            img_B = rot_image(img_B,fine_size,angle)
 
         if flip and np.random.random() > 0.5:
             img_A = np.fliplr(img_A)
@@ -61,9 +62,9 @@ def preprocess_A_and_B(img_A, img_B, load_size=286, fine_size=256, flip=True, is
 
     return img_A, img_B
 
-def rot_image(im_arr,fine_size):
+def rot_image(im_arr,fine_size,angle):
     src_im = Image.fromarray(im_arr)
-    angle=np.random.random_sample()*360-180
+    
 
     src_im_Rs=src_im
     dst_im = Image.new("RGB", (fine_size,fine_size) )
