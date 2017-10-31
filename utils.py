@@ -18,9 +18,9 @@ get_stddev = lambda x, k_h, k_w: 1/math.sqrt(k_w*k_h*x.get_shape()[-1])
 # -----------------------------
 # new added functions for pix2pix
 
-def load_data(image_path, flip=True, is_test=False,is_random_rot=False):
+def load_data(image_path, flip=True, is_test=False,is_random_rot=False,load_size=286,fine_size=256):
     img_A, img_B = load_image(image_path)
-    img_A, img_B = preprocess_A_and_B(img_A, img_B, flip=flip, is_test=is_test,is_random_rot=is_random_rot)
+    img_A, img_B = preprocess_A_and_B(img_A, img_B, flip=flip, is_test=is_test,is_random_rot=is_random_rot,load_size=load_size,fine_size=fine_size)
 
     img_A = img_A/127.5 - 1.
     img_B = img_B/127.5 - 1.
@@ -114,12 +114,12 @@ def inverse_transform(images):
     return (images+1.)/2.
 
 
-def load_blind_data(image_path, flip=True, is_test=False):
+def load_blind_data(image_path, flip=True, is_test=False,load_size=286,fine_size=256):
     input_img = imread(image_path)
     ori_h,ori_w,channel=input_img.shape
-    input_img_rsh=scipy.misc.imresize(input_img,[256,256]).astype(np.float)
+    input_img_rsh=scipy.misc.imresize(input_img,[fine_size,fine_size]).astype(np.float)
     
-    img_A = np.zeros((256,256,3))
+    img_A = np.zeros((fine_size,fine_size,3))
     img_B = input_img_rsh
 
     img_A = img_A/127.5 - 1.
